@@ -1,10 +1,16 @@
-
+import Login from "./pages/Login"
+// import Home from "./pages/Home";
+import Poll from "./pages/Poll";
+import { BrowserRouter,Routes,Route } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <h1 className="text-3xl bg-red-200 font-bold underline">
-        Hello world!
-      </h1>
+      <BrowserRouter>
+        <Routes>
+           <Route path="/" element={<Login />} />
+           <Route path="poll" element={<Poll />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
