@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { validation } from "../utils/validation";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../redux/reducers/authSlice";
-import { useNavigate } from "react-router-dom";
+import { validation } from "../utils/validation";
+
 import { Link } from "react-router-dom";
-// import Poll from "./poll";
 const Login = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Login = () => {
     passwordError: "",
   });
 
-  const { loading, errors } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,22 +31,18 @@ const Login = () => {
     e.preventDefault();
 
     const { errors, isValid } = validation(formData);
-
-    // console.log(err);
-
     if (isValid) {
       try {
         const res = await dispatch(loginUser(formData));
-        console.log(res, "response status");
-        if (res.payload.code === 200) {
+        if (res.payload === 200) {
           Navigate("/poll");
         } else if (res.payload === 401) {
-          setError({ ...error, passwordError: "Invalid login or password. Please try again." });
+          setError({ passwordError: "Invalid login or password" });
         } else {
-          setError({ ...error, emailError: "User data not found" });
+          setError({ passwordError: "User data not found" });
         }
       } catch (error) {
-        setError("An error occurred. Please try again later.");
+        setError({...error,passwordError:"An error occurred. Please try again later."});
       }
     } else {
       setError({
@@ -54,9 +50,6 @@ const Login = () => {
         passwordError: errors.password,
       });
     }
-
-    console.log("Email:", formData.email);
-    console.log("Password:", formData.password);
   };
 
   useEffect(() => {
@@ -82,7 +75,6 @@ const Login = () => {
                 name="email"
                 type="text"
                 autoComplete="email"
-                // required
                 value={formData.email}
                 onChange={handleChange}
                 className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
@@ -135,7 +127,6 @@ const Login = () => {
               )}
             </button>
           </div>
-          {errors && <div className="text-red">{errors}</div>}
         </form>
         <div className="">
               <p className="text-base text-center font-semibold">Don't have an account? <Link className="text-blue-600" to="">Register</Link></p>
