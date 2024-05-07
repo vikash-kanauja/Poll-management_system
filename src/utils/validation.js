@@ -1,24 +1,21 @@
-export const validation = (formData)=>{
-    const error={
-    };
+export const validation = (formData) => {
+    const errors = {};
     let isValid = true;
-    if(!formData.email.trim()){
-        // {error.email : "Email is require";}
-        error.email ="Email is require";
-        isValid=false;
-    }
-    else if(!(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/).test(formData.email)){
-        error.email = "Enter valida Email Id"
+
+    // Email validation
+    if (!formData.email.trim()) {
+        errors.email = "Email is required";
+        isValid = false;
+    } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email)) {
+        errors.email = "Enter valid Email Id";
         isValid = false;
     }
 
-    if(!formData.password ){
-        error.password = "Password is requier"
+    // Password validation
+    if (!formData.password) {
+        errors.password = "Password is required";
         isValid = false;
-    }else if ((formData.password).length <= 6 ){
-        error.password = "Password is too sort"
-        isValid = false
-    }
-    // console.log(error ,"err" ,isValid,"isValid");
-    return {error,isValid};
-}
+    } 
+
+    return { errors, isValid };
+};

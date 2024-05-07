@@ -4,17 +4,18 @@ export const loginUser = createAsyncThunk(
 
   "auth/loginUser",
   async (formData, thunkAPI) => {
-    
+    console.log(process.env.REACT_APP_BASE_URL);
     try {
-      const response = await axios.post(`https://809e-119-82-71-56.ngrok-free.app/user/login`, 
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/v1/admin/admin_login`, 
         formData
       );
       localStorage.setItem("user", JSON.stringify(response?.data.user));
       localStorage.setItem("token", JSON.stringify(response?.data.token));
+      console.log(response.data);
       return response.data;
     } catch (error) {
-      console.log(error);
-      return thunkAPI.rejectWithValue(error.message);
+      console.log(error.response.status,"IN CATCH");
+      return thunkAPI.rejectWithValue(error.response.status);
     }
   }
 );
@@ -32,6 +33,7 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
       state.errors = null;
+      localStorage.clear()
     },
   },
   extraReducers: (builder) => {
@@ -48,13 +50,14 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
+        console.log(action,"Action");
         // in video state.user = null 14.
-        console.log(action.error.message,"action.error.message,");
-        if(action.error.message === "Request faild with status code 401"){
-          state.errors = "Acess Denied! Invalid Credential";
-        }else{
-          state.errors   = action.error.message
-        }
+        // if(action.error.message === "Request faild with status code 401"){
+        //   state.errors = "Acess Denied! Invalid Credential";
+        // }else{
+        //   state.errors   = action.error.message
+        // }
+        console.log(action.payload,"action.payload...................");
         state.errors = action.payload;
       });
   },

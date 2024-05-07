@@ -3,6 +3,7 @@ import { validation } from "../utils/validation";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../redux/reducers/authSlice";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import Poll from "./poll";
 const Login = () => {
   const Navigate = useNavigate();
@@ -29,28 +30,28 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { error, isValid } = validation(formData);
-   
-    if (isValid) {
+    const { errors, isValid } = validation(formData);
 
+    // console.log(err);
+
+    if (isValid) {
       try {
         const res = await dispatch(loginUser(formData));
-        console.log(res,"response status");
-        if (res.payload.user) { Navigate('poll') }
-        else if (errors === 'Request failed with status code 401') {
-          setError({ ...error, passwordError: "Password is incorrect" });
-        }
-        else {
+        console.log(res, "response status");
+        if (res.payload.code === 200) {
+          Navigate("/poll");
+        } else if (res.payload === 401) {
+          setError({ ...error, passwordError: "Invalid login or password. Please try again." });
+        } else {
           setError({ ...error, emailError: "User data not found" });
         }
       } catch (error) {
         setError("An error occurred. Please try again later.");
       }
-
     } else {
       setError({
-        emailError: error.email,
-        passwordError: error.password,
+        emailError: errors.email,
+        passwordError: errors.password,
       });
     }
 
@@ -62,17 +63,17 @@ const Login = () => {
     setError(error);
   }, [error]);
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-200 py-12 px-4 sm:px-6 lg:px-8 ">
+      <div className="md:max-w-sm 2xl:max-w-md w-full space-y-8 bg-white p-4 rounded-lg">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Log in to your account
+            Login 
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="py-2">
-              <label htmlFor="email-address" className="px-3 sr-only">
+              <label htmlFor="email-address" className="font-semibold ">
                 Email address
                 {formData.emailError}
               </label>
@@ -84,16 +85,17 @@ const Login = () => {
                 // required
                 value={formData.email}
                 onChange={handleChange}
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${formData.emailError ? "border-red-500" : "border-gray-300"
-                  } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                placeholder="Email address"
+                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
+                  formData.emailError ? "border-red-500" : "border-gray-300"
+                } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                placeholder="Enter email "
               />
               {error.emailError && (
-                <p className="mt-2 text-sm text-red-500">{error.emailError}</p>
+                <p className="mt-2 text-sm text-red-500">{error.emailError}</p> 
               )}
             </div>
             <div>
-              <label htmlFor="password" className="px-3 sr-only">
+              <label htmlFor="password" className=" font-semibold">
                 Password
               </label>
               <input
@@ -103,9 +105,10 @@ const Login = () => {
                 autoComplete="current-password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${formData.passwordError ? "border-red-500" : "border-gray-300"
-                  } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                placeholder="Password"
+                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
+                  formData.passwordError ? "border-red-500" : "border-gray-300"
+                } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
+                placeholder="Enter password"
               />
               {error.passwordError && (
                 <p className="mt-2 text-sm text-red-500">
@@ -131,11 +134,12 @@ const Login = () => {
                 "Login"
               )}
             </button>
-
           </div>
-          {errors && (<div className="text-red">{errors}</div>)}
-
+          {errors && <div className="text-red">{errors}</div>}
         </form>
+        <div className="">
+              <p className="text-base text-center font-semibold">Don't have an account? <Link className="text-blue-600" to="">Register</Link></p>
+        </div>
       </div>
     </div>
   );
