@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter, Redirect,Navigate } from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import PrivateRoute from "./utils/PrivateRoute";
 import Login from "./pages/Login";
 import Poll from "./pages/Poll";
@@ -9,9 +9,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<PrivateRoute />}>
-              <Route element={<Poll/>} path="/poll" exact />
+            <Route element={<Poll />} path="/poll" />
           </Route>
-          <Route element={<Login/>} path="/" />
+          <Route element={<Login />} path="/" />
         </Routes>
       </BrowserRouter>
     </div>

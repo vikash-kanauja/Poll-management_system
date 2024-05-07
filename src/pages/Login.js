@@ -6,7 +6,7 @@ import { validation } from "../utils/validation";
 
 import { Link } from "react-router-dom";
 const Login = () => {
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
@@ -18,7 +18,6 @@ const Login = () => {
   });
 
   const { loading } = useSelector((state) => state.auth);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -33,17 +32,18 @@ const Login = () => {
     const { errors, isValid } = validation(formData);
     if (isValid) {
       try {
-        const res = await dispatch(loginUser(formData));
-        if (res.payload === 200) {
-          Navigate("/poll");
-        } else if (res.payload === 401) {
-          setError({ passwordError: "Invalid login or password" });
+        const res = await dispatch(loginUser(formData));      
+        if (res.payload.status === 200) {
+          navigate("/poll");
+        } else if (res.payload.status === 401) {
+          setError({ passwordError : res.payload.data.message });
         } else {
-          setError({ passwordError: "User data not found" });
+          setError({ passwordError: res.payload.data.message });
         }
       } catch (error) {
-        setError({...error,passwordError:"An error occurred. Please try again later."});
+        setError({ ...error, passwordError: "An error occurred. Please try again later." });
       }
+      
     } else {
       setError({
         emailError: errors.email,
@@ -64,7 +64,7 @@ const Login = () => {
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
+          <div className="rounded-md  -space-y-px">
             <div className="py-2">
               <label htmlFor="email-address" className="font-semibold ">
                 Email address
