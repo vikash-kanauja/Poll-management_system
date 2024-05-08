@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../redux/reducers/authSlice";
-import { validation } from "../utils/validation";
+import { validateLogin } from "../utils/validation";
 
 import { Link } from "react-router-dom";
 const Login = () => {
@@ -29,10 +29,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { errors, isValid } = validation(formData);
+    const { errors, isValid } = validateLogin(formData);
     if (isValid) {
       try {
-        const res = await dispatch(loginUser(formData));      
+        const res = await dispatch(loginUser(formData));   
         if (res.payload.status === 200) {
           navigate("/poll");
         } else if (res.payload.status === 401) {
@@ -129,7 +129,7 @@ const Login = () => {
           </div>
         </form>
         <div className="">
-              <p className="text-base text-center font-semibold">Don't have an account? <Link className="text-blue-600" to="">Register</Link></p>
+              <p className="text-base text-center font-semibold">Don't have an account? <Link className="text-blue-600" to="/signup">Register</Link></p>
         </div>
       </div>
     </div>
