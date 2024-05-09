@@ -28,6 +28,7 @@ export const signupUser = createAsyncThunk(
         `${process.env.REACT_APP_BASE_URL}/user/register`,
         formData
       );
+      
       return response;
     } catch (error) {
       return error.response;

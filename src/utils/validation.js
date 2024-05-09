@@ -6,10 +6,14 @@ export const validateSignup = (formData) => {
     if ( !formData.firstName.trim()) {
         errors.firstName = "First Name is required";
         isValid = false;
+    }else if(formData.firstName.trim().length<4){
+        errors.firstName = "firstName must be contain 4 character"
     }
     if ( !formData.lastName.trim()) {
         errors.lastName = "Last Name is required";
         isValid = false;
+    }else if(formData.firstName.trim().length<4){
+        errors.lastName = "lastName must be contain 4 character"
     }
     if ( !formData.email.trim()) {
         errors.email = "Email is required";
@@ -25,14 +29,18 @@ export const validateSignup = (formData) => {
 
     if (!formData.password.trim()) {
         errors.password = "Password is required";
+        isValid = false;
       } else if (formData.password.trim().length < 8) {
         errors.password =  "Password must be at least 8 characters long";
+        isValid = false;
       }
 
       if (!formData.confirmPassword.trim()) {
         errors.confirmPassword = "Password is required";
+        isValid = false;
       } else if (formData.password !== formData.confirmPassword) {
-        errors.confirmPassword =  "Password must be at least 8 characters long";
+        errors.confirmPassword =  "The password and confirmation password do not match.";
+        isValid = false;
       }
 
     return { errors, isValid };
