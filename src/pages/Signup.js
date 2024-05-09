@@ -210,7 +210,7 @@ const Signup = () => {
                     </div>
                 </form>
                 <div className="">
-                    <p className="text-base text-center font-semibold">Don't have an account? <Link className="text-blue-600" to="/">Login</Link></p>
+                    <p className="text-base text-center font-semibold">Already have an account? <Link className="text-blue-600" to="/">Login</Link></p>
                 </div>
                 {successMessage && (
                     <div className="mt-4 bg-green-200 text-green-800 p-2 rounded">
