@@ -6,13 +6,13 @@ export const validateSignup = (formData) => {
     if ( !formData.firstName.trim()) {
         errors.firstName = "First Name is required";
         isValid = false;
-    }else if(formData.firstName.trim().length<4){
+    }else if(formData.firstName.trim().length < 4){
         errors.firstName = "firstName must be contain 4 character"
     }
     if ( !formData.lastName.trim()) {
         errors.lastName = "Last Name is required";
         isValid = false;
-    }else if(formData.firstName.trim().length<4){
+    }else if(formData.firstName.trim().length < 4){
         errors.lastName = "lastName must be contain 4 character"
     }
     if ( !formData.email.trim()) {
