@@ -1,4 +1,3 @@
-// validation.js
 
 export const validateSignup = (formData) => {
     const errors = {};
@@ -23,14 +22,18 @@ export const validateSignup = (formData) => {
         errors.roleId = "Role is required";
         isValid = false;
     }
+
     if (!formData.password.trim()) {
         errors.password = "Password is required";
-        isValid = false;
-    }
-    if (formData.password !== formData.confirmPassword) {
-        errors.confirmPassword = "Passwords do not match";
-        isValid = false;
-    }
+      } else if (formData.password.trim().length < 8) {
+        errors.password =  "Password must be at least 8 characters long";
+      }
+
+      if (!formData.confirmPassword.trim()) {
+        errors.confirmPassword = "Password is required";
+      } else if (formData.password !== formData.confirmPassword) {
+        errors.confirmPassword =  "Password must be at least 8 characters long";
+      }
 
     return { errors, isValid };
 };

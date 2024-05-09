@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Link} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { validateSignup } from "../utils/validation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signupUser } from "../redux/reducers/authSlice";
 import { useDispatch, useSelector } from "react-redux"
 import Modal from "../Components/Modal";
+import { fetchRoles } from '../redux/reducers/rollListSlice';
 
 const Signup = () => {
     const dispatch = useDispatch()
@@ -22,9 +23,9 @@ const Signup = () => {
     })
     const [error, setError] = useState({});
     const [showModal, setShowModal] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
 
     const { loading } = useSelector((state) => state.auth);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -50,6 +51,12 @@ const Signup = () => {
             setError(errors);
         }
     };
+
+    const role = useSelector((state) => state.roles.role);
+
+    useEffect(() => {
+        dispatch(fetchRoles());
+    }, []);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-200 py-12 px-4 sm:px-6 lg:px-8">
@@ -122,16 +129,22 @@ const Signup = () => {
                             <label htmlFor="password" className=" font-semibold">
                                 Role
                             </label>
-                            <input
-                                type="text"
-                                id="Role"
+                            <select
                                 name="roleId"
-                                value={formData.roleId}
+                                id="roleId"
+                                className={`w-full py-1 sm:py-2 pl-2 outline-none border-2 ${error.roleId ? "border-red-700" : ""
+                                    }`}
                                 onChange={handleChange}
-                                placeholder="Role"
-                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${formData.passwordError ? "border-red-500" : "border-gray-300"
-                                    } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
-                            />
+                                value={formData.roleId}>
+                                <option value="">Select Role</option>
+                                {role.data?.map((role, index) => {
+                                    return (
+                                        <option key={index} value={`${role.id}`}>
+                                            {role.name}
+                                        </option>
+                                    );
+                                })}
+                            </select>
                             {error.roleId && (
                                 <p className="mt-2 text-sm text-red-500">
                                     {error.roleId}
@@ -212,11 +225,7 @@ const Signup = () => {
                 <div className="">
                     <p className="text-base text-center font-semibold">Already have an account? <Link className="text-blue-600" to="/">Login</Link></p>
                 </div>
-                {successMessage && (
-                    <div className="mt-4 bg-green-200 text-green-800 p-2 rounded">
-                        {successMessage}
-                    </div>
-                )}
+
                 <Modal showModal={showModal}
                     setShowModal={setShowModal}
                     heading={"success"}
