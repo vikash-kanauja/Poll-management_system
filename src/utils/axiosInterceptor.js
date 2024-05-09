@@ -8,6 +8,7 @@ const axiosInterceptor = () => {
         config.headers.token = `${token}`;
       }
       config.headers["Access-Control-Allow-Origin"] = "*";
+      config.headers["ngrok-skip-browser-warning"] = "69420";
       return config;
     },
     (error) => {

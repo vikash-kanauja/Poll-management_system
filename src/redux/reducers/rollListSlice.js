@@ -4,12 +4,9 @@ import axiosInterceptor from '../../utils/axiosInterceptor';
 export const fetchRoles = createAsyncThunk(
     'roles/fetchRoles',
     async () => {
-        const headers = {
-            "ngrok-skip-browser-warning": "69420"
-          };
+        
         const response = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/role/list`,
-            { headers:headers}
         );
         return response;
     }

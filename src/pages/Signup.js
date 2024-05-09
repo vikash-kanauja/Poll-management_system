@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { validateSignup } from "../utils/validation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signupUser } from "../redux/reducers/authSlice";
@@ -21,10 +21,13 @@ const Signup = () => {
         showpassword: false,
         showConfirmPassword: false
     })
+    const [successMessage, setSuccessMessage] = useState("");
     const [error, setError] = useState({});
     const [showModal, setShowModal] = useState(false);
 
+    const navigate = useNavigate();
     const { loading } = useSelector((state) => state.auth);
+    const role = useSelector((state) => state.roles.role);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -44,19 +47,22 @@ const Signup = () => {
             const res = await dispatch(signupUser(formDataWithoutConfirmPassword));
             if (res.payload.status === 200) {
                 setShowModal(true)
-            } else {
-                setError({ ...error, email: "Email already registered" });
+            } else if(res.payload.status === 500){
+                setSuccessMessage(res.payload.data );
             }
         } else {
             setError(errors);
+            setSuccessMessage("")
         }
     };
-
-    const role = useSelector((state) => state.roles.role);
+    const modalHandleNavigate = () => {
+        setShowModal(false);
+          navigate("/");
+      };
 
     useEffect(() => {
         dispatch(fetchRoles());
-    }, [error]);
+    }, []);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-200 py-12 px-4 sm:px-6 lg:px-8">
@@ -69,7 +75,6 @@ const Signup = () => {
                         <div className="py-2">
                             <label htmlFor="email-address" className="font-semibold ">
                                 First Name
-                                {formData.emailError}
                             </label>
                             <input
                                 type="text"
@@ -78,7 +83,7 @@ const Signup = () => {
                                 value={formData.firstName}
                                 onChange={handleChange}
                                 placeholder="First Name"
-                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${formData.emailError ? "border-red-500" : "border-gray-300"
+                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${error.firstName? "border-red-500" : "border-gray-300"
                                     } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                             />
                             {error.firstName && (
@@ -96,7 +101,7 @@ const Signup = () => {
                                 value={formData.lastName}
                                 onChange={handleChange}
                                 placeholder="Last Name"
-                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${formData.passwordError ? "border-red-500" : "border-gray-300"
+                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${error.lastName ? "border-red-500" : "border-gray-300"
                                     } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                             />
                             {error.lastName && (
@@ -116,7 +121,7 @@ const Signup = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="Email"
-                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${formData.passwordError ? "border-red-500" : "border-gray-300"
+                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${error.email ? "border-red-500" : "border-gray-300"
                                     } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                             />
                             {error.email && (
@@ -132,7 +137,7 @@ const Signup = () => {
                             <select
                                 name="roleId"
                                 id="roleId"
-                                className={`w-full py-1 sm:py-2 pl-2 outline-none border-2 ${error.roleId ? "border-red-700" : ""
+                                className={`w-full py-1 sm:py-2 pl-2 outline-none border ${error.roleId ? "border-red-500" : "border-gray-300"
                                     }`}
                                 onChange={handleChange}
                                 value={formData.roleId}>
@@ -140,7 +145,7 @@ const Signup = () => {
                                 {role.data?.map((role, index) => {
                                     return (
                                         <option key={index} value={`${role.id}`}>
-                                            {role.name}
+                                            {role.name.toLowerCase()}
                                         </option>
                                     );
                                 })}
@@ -162,7 +167,7 @@ const Signup = () => {
                                     value={formData.password}
                                     onChange={handleChange}
                                     placeholder="Password"
-                                    className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${formData.passwordError ? "border-red-500" : "border-gray-300"
+                                    className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${error.password ? "border-red-500" : "border-gray-300"
                                         } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                                 />
                                 <div className="absolute right-2 top-[30%] z-10">
@@ -188,7 +193,7 @@ const Signup = () => {
                                     value={formData.confirmPassword}
                                     onChange={handleChange}
                                     placeholder="Confirm Password"
-                                    className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${formData.passwordError ? "border-red-500" : "border-gray-300"
+                                    className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${error.confirmPassword ? "border-red-500" : "border-gray-300"
                                         } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                                 />
                                 <div className="absolute right-2 top-[30%] z-10">
@@ -226,11 +231,19 @@ const Signup = () => {
                     <p className="text-base text-center font-semibold">Already have an account? <Link className="text-blue-600" to="/">Login</Link></p>
                 </div>
 
-                <Modal showModal={showModal}
-                    setShowModal={setShowModal}
-                    heading={"success"}
-                    message={"User register successful"}
-                />
+                {successMessage && (
+                    <div className="mt-4 bg-red-200 text-black-800 p-2 text-center rounded">
+                        {successMessage}
+                    </div>
+                )}
+        
+               {showModal && ( <Modal 
+                    heading={"Successfully"}
+                    message={"User signup Succesfully!"}
+                    modalHandleNavigate={modalHandleNavigate}
+                    buttonText={"Ok"}
+                    col
+                />)}
             </div>
         </div>
     );
