@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ heading, message, modalHandleNavigate, buttonText, CancleButton, CancelButtonText }) => {
+const Modal = ({ heading, message, modalHandleNavigate, buttonText, cancleButton, cancelButtonText }) => {
   return (
     <div className="fixed z-10 inset-0 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -25,14 +25,14 @@ const Modal = ({ heading, message, modalHandleNavigate, buttonText, CancleButton
           </div>
           <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
             <div
-              className={`mt-7 flex gap-4 ${CancleButton ? "justify-between" : "justify-end"
+              className={`mt-7 flex gap-4 ${cancleButton ? "justify-between" : "justify-end"
                 }`}>
-              {CancelButtonText && (
+              {cancelButtonText && (
                 <button
-                  onClick={CancleButton}
+                  onClick={cancleButton}
                   className="px-4 py-2 text-gray-800 rounded-md border hover:bg-gray-400"
                 >
-                  {CancelButtonText}
+                  {cancelButtonText}
                 </button>
               )}
               <button type="button" onClick={modalHandleNavigate} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">

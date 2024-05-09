@@ -1,11 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./utils/PrivateRoute";
+import axiosInterceptor from './utils/axiosInterceptor';
 import Login from "./pages/Login";
 import Poll from "./pages/Poll";
 import PageNotFound from "./pages/PageNotFound"
 import Signup from "./pages/Signup";
 
 function App() {
+  axiosInterceptor();
   return (
     <div className="App">
       <Routes>
