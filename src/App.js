@@ -7,11 +7,10 @@ import PageNotFound from "./pages/PageNotFound"
 import Signup from "./pages/Signup";
 
 function App() {
-
+  
   axiosInterceptor();
   return (
     <div className="App">
-      
       <Routes>
         <Route
           path="/"
@@ -25,7 +24,7 @@ function App() {
           path="/signup"
           element={<PrivateRoute Component={Signup} redirectTo="/signup" />}
         />
-          <Route path="/*" element={<PageNotFound />} />
+        <Route path="/*" element={<PageNotFound />} />
       </Routes>
     </div>
   );

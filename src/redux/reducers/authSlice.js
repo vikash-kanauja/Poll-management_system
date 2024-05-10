@@ -11,6 +11,7 @@ export const loginUser = createAsyncThunk(
       );
       localStorage.setItem("user", JSON.stringify(response?.data.user));
       localStorage.setItem("token", JSON.stringify(response?.data.token));
+      console.log(response);
       return response;
 
     } catch (error) {
@@ -27,7 +28,6 @@ export const signupUser = createAsyncThunk(
         `${process.env.REACT_APP_BASE_URL}/user/register`,
         formData
       );
-      
       return response;
     } catch (error) {
       return error.response;

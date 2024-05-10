@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { validateSignup } from "../utils/validation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signupUser } from "../redux/reducers/authSlice";
@@ -47,8 +47,8 @@ const Signup = () => {
             const res = await dispatch(signupUser(formDataWithoutConfirmPassword));
             if (res.payload.status === 200) {
                 setShowModal(true)
-            } else if(res.payload.status === 500){
-                setSuccessMessage(res.payload.data );
+            } else if (res.payload.status === 500) {
+                setSuccessMessage(res.payload.data);
             }
         } else {
             setError(errors);
@@ -57,8 +57,8 @@ const Signup = () => {
     };
     const modalHandleNavigate = () => {
         setShowModal(false);
-          navigate("/");
-      };
+        navigate("/");
+    };
 
     useEffect(() => {
         dispatch(fetchRoles());
@@ -83,7 +83,7 @@ const Signup = () => {
                                 value={formData.firstName}
                                 onChange={handleChange}
                                 placeholder="First Name"
-                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${error.firstName? "border-red-500" : "border-gray-300"
+                                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${error.firstName ? "border-red-500" : "border-gray-300"
                                     } placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm`}
                             />
                             {error.firstName && (
@@ -236,8 +236,8 @@ const Signup = () => {
                         {successMessage}
                     </div>
                 )}
-        
-               {showModal && ( <Modal 
+
+                {showModal && (<Modal
                     heading={"Successfully"}
                     message={"User signup Succesfully!"}
                     modalHandleNavigate={modalHandleNavigate}
