@@ -7,7 +7,8 @@ const axiosInterceptor = () => {
       if (token) {
         config.headers.token = `${token}`;
       }
-      config.headers["Access-Control-Allow-Origin"] = "*";
+      axios.defaults.baseURL = 'https://c503-119-82-87-26.ngrok-free.app';
+      axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://localhost:3000';
       config.headers["ngrok-skip-browser-warning"] = "69420";
       return config;
     },

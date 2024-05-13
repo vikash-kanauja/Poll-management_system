@@ -11,11 +11,11 @@ import AddPoll from "./pages/AddPoll";
 import { useSelector } from "react-redux";
 
 function App() {
-  const u = useSelector(state => state.auth.user) 
+  const user = useSelector(state => state.auth.user);
   axiosInterceptor();
   return (
     <div className="App">
-      {u && <Navbar />}
+      {user && <Navbar />}
       <Routes>
         <Route
           path="/"
@@ -37,7 +37,6 @@ function App() {
           path="/createUser"
           element={<PrivateRoute Component={Signup} redirectTo="/createUser" />}
         />
-
         <Route
           path="/users"
           element={<PrivateRoute Component={Users} redirectTo="/users" />}
