@@ -8,8 +8,7 @@ import PageNotFound from "./pages/PageNotFound"
 import Signup from "./pages/Signup";
 import Navbar from "./Components/Navbar";
 import AddPoll from "./pages/AddPoll";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+import CreateUser from "./Components/CreateUser";
 
 function App() {
 
@@ -36,7 +35,7 @@ function App() {
         />
         <Route
           path="/createUser"
-          element={<PrivateRoute Component={Signup} redirectTo="/createUser" />}
+          element={<PrivateRoute Component={CreateUser} redirectTo="/createUser" />}
         />
         <Route
           path="/users"
