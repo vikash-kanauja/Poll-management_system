@@ -11,7 +11,6 @@ export const loginUser = createAsyncThunk(
       );
       localStorage.setItem("user", JSON.stringify(response?.data.user));
       localStorage.setItem("token", JSON.stringify(response?.data.token));
-      console.log(response);
       return response;
 
     } catch (error) {
@@ -55,7 +54,6 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
       state.err = null;
-      // localStorage.clear()
       localStorage.removeItem("user");
       localStorage.removeItem("token");
     },
