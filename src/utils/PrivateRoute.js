@@ -5,8 +5,8 @@ const PrivateRoute = ({ Component, redirectTo }) => {
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem("token"));
     if (token) {
-      if ( redirectTo ==="/poll"  || redirectTo === "/") {
-        navigate("/poll");
+      if ( redirectTo ==="/signup"  || redirectTo === "/") {
+        navigate("/polling");
       }
     } else  {
       navigate(redirectTo === "/signup" ? "/signup" : "/");
@@ -15,3 +15,4 @@ const PrivateRoute = ({ Component, redirectTo }) => {
   return <Component />;
 }
   export default PrivateRoute;
+

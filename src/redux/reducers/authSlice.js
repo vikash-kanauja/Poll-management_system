@@ -11,7 +11,6 @@ export const loginUser = createAsyncThunk(
       );
       localStorage.setItem("user", JSON.stringify(response?.data.user));
       localStorage.setItem("token", JSON.stringify(response?.data.token));
-      console.log(response);
       return response;
 
     } catch (error) {
@@ -45,11 +44,18 @@ const authSlice = createSlice({
     err: null,
   },
   reducers: {
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+    getUser: (state) => {
+      state.user = JSON.parse(localStorage.getItem("user")) || null;
+    },
     logout: (state) => {
       state.isLoggedIn = false;
       state.user = null;
       state.err = null;
-      localStorage.clear()
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
@@ -60,7 +66,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoggedIn = true;
-        state.user = action.payload;
+        state.user = action.payload.data.user;
         state.loading = false;
         state.err = null;
       })
@@ -82,4 +88,4 @@ const authSlice = createSlice({
 
 
 export default authSlice.reducer;
-export const { logout } = authSlice.actions;
+export const { logout,getUser } = authSlice.actions;

@@ -35,7 +35,7 @@ const Login = () => {
       try {
         const res = await dispatch(loginUser(formData));
         if (res.payload.status === 200) {
-          navigate("/poll");
+          navigate("/polling");
         } else if (res.payload.status === 401) {
           setError({ passwordError: res.payload.data.message });
         } else {
