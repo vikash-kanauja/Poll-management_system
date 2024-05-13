@@ -6,24 +6,25 @@ import Poll from "./pages/Poll";
 import Users from "./pages/Users";
 import PageNotFound from "./pages/PageNotFound"
 import Signup from "./pages/Signup";
-import  Navbar  from "./Components/Navbar";
+import Navbar from "./Components/Navbar";
 import AddPoll from "./pages/AddPoll";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function App() {
-  const user = useSelector(state => state.auth.user);
+
   axiosInterceptor();
   return (
     <div className="App">
-      {user && <Navbar />}
+      <Navbar />
       <Routes>
         <Route
           path="/"
           element={<PrivateRoute Component={Login} redirectTo="/" />}
         />
         <Route
-          path="/poll"
-          element={<PrivateRoute Component={Poll} redirectTo="/poll" />}
+          path="/polling"
+          element={<PrivateRoute Component={Poll} redirectTo="/polling" />}
         />
         <Route
           path="/signup"

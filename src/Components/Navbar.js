@@ -4,12 +4,15 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import navItems from '../utils/navItems.json'
 import { FaUserCircle } from "react-icons/fa";
 import { getUser, logout } from '../redux/reducers/authSlice'
+import { ADMIN_ID } from '../utils/constantValue';
+import LogoutPopup from './LogoutPopup';
 
-const Navbar = () => {
+const Navbar =  () => {
     const [isOpen, setIsOpen] = useState(false);
     const [showLogoutMenu, setShowLogoutMenu] = useState(false)
+    const userData = useSelector(state => state.auth.user)
+    
     const dispatch = useDispatch()
-    const user = useSelector(state => state.auth.user)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -24,16 +27,16 @@ const Navbar = () => {
         dispatch(logout());
         navigate("/");
     };
-
+ 
     return (
-        <nav className="bg-gray-800 relative">
+        userData && (<nav className="bg-gray-800 relative">
             <div className="max-w-8xl mx-auto px-4 sm:px-2 lg:px-8">
                 <div className="flex items-center justify-between h-12 xl:h-14 2xl:h-20">
-                    {user?.roleId && <ul className={`${isOpen ? ' absolute top-full bg-gray-700 left-0 right-0 px-0 pt-0 pb-0 font-semibold sm:px-3 flex items-baseline space-x-4 flex-col border-t ' : ' hidden md:block  md:ml-5 md:flex gap-4 md:space-x-4  xl:text-lg 2xl:text-4xl'}`}>
-                        <li className="text-white font-semibold pl-4 md:pl-0 border-b md:border-0 w-full md:w-max  py-1 " style={{ marginLeft: '0px' }} >
-                            <NavLink to="/poll" className="text-white">Polls</NavLink>
+                    <ul className={`${isOpen ? ' absolute top-full bg-gray-700 left-0 right-0 px-0 pt-0 pb-0 font-semibold sm:px-3 flex items-baseline space-x-4 flex-col border-t ' : ' hidden md:block  md:ml-5 md:flex gap-4 md:space-x-4  xl:text-lg 2xl:text-2xl'}`}>
+                        <li className="text-white font-semibold pl-4 md:pl-0 border-b md:border-0 w-full md:w-max py-1  " style={{ marginLeft: '0px' }} >
+                            <NavLink to="/polling" className={({ isActive }) => isActive ? "text-gray-500 ml-0" : "text-white"}>Polls</NavLink>
                         </li>
-                        {user?.roleId === 2 && navItems.map((item, index) => {
+                        {userData?.roleId === ADMIN_ID && navItems.map((item, index) => {
                             return (
                                 <li key={index} className="text-white font-semibold border-b pl-4 md:pl-4 py-1 w-full md:border-0 md:w-max lg:pl-6 xl:pl-10 " style={{ marginLeft: '0px' }} >
                                     <NavLink
@@ -49,10 +52,9 @@ const Navbar = () => {
                             );
                         })}
                     </ul>
-                    }
 
                     <div
-                        className="flex items-center relative gap-2 md:mr-18 md:mr-5"
+                        className="flex items-center relative gap-2 md:mr-18 md:mr-5 cursor-pointerr"
                         onClick={() => {
                             setShowLogoutMenu(!showLogoutMenu)
                         }}>
@@ -60,16 +62,14 @@ const Navbar = () => {
                             <div className='flex items-center'>
                                 <FaUserCircle className='xl:text-4xl 2xl:text-5xl' />
                             </div>
-
+                                 
                             <div className=''>
-                                <h1 className="text-xs xl:text-base 2xl:text-xl">{`${user?.firstName} ${user?.lastName}`}</h1>
-                                <p className="text-xs xl:text-base ">{user?.email}</p>
+                                <h1 className="text-xs lg:text-xs xl:text-sm 2xl:text-xl">{`${userData?.firstName} ${userData?.lastName}`}</h1>
+                                <p className="text-xs xl:text-sm 2xl:text-xl">{userData?.email}</p>
                             </div>
                         </div>
                         {showLogoutMenu && (
-                            <button className='absolute bg-red-800 w-[80%] right-0 top-[125%] xl:top-[109%] 2xl:top-[127%] rounded-b m-0 p-1 '>
-                                <p className='text-white  hover:text-red-500 m-0 xl:m-1 2xl:text-3xl' onClick={handleLogout}>Logout</p>
-                            </button>
+                            <LogoutPopup handleLogout={handleLogout}/>
                         )}
                     </div>
                     <div className="-mr-2 flex md:hidden">
@@ -81,7 +81,7 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
-        </nav>
+        </nav>)
     );
 }
 
