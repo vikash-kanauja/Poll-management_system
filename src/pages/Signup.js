@@ -240,7 +240,7 @@ const Signup = () => {
                 {showModal && (<Modal
                     heading={"Successfully"}
                     message={"User signup Succesfully!"}
-                    modalHandleNavigate={modalHandleNavigate}
+                    clickOkButton={modalHandleNavigate}
                     buttonText={"Ok"}
                     col
                 />)}
