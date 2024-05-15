@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Navbar from "./Components/Navbar";
 import AddPoll from "./pages/AddPoll";
 import CreateUser from "./Components/CreateUser";
+import EditPollList from "./pages/EditPollList";
 
 function App() {
 
@@ -40,6 +41,12 @@ function App() {
         <Route
           path="/users"
           element={<PrivateRoute Component={Users} redirectTo="/users" />}
+        />
+        <Route
+          path="/editPoll/:id"
+          element={
+            <PrivateRoute Component={EditPollList} redirectTo="/editPoll" />
+          }
         />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
