@@ -56,6 +56,8 @@ const authSlice = createSlice({
       state.err = null;
       localStorage.removeItem("user");
       localStorage.removeItem("token");
+      localStorage.removeItem("VotedPollsOptions");
+
     },
   },
   extraReducers: (builder) => {
@@ -88,4 +90,4 @@ const authSlice = createSlice({
 
 
 export default authSlice.reducer;
-export const { logout,getUser } = authSlice.actions;
+export const { logout, getUser } = authSlice.actions;

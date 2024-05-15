@@ -34,7 +34,7 @@ export const votedPollOption = createAsyncThunk(
     async (optionId) => {
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}vote/count`,
+          `${process.env.REACT_APP_BASE_URL}/vote/count`,
           {
             optionId,
           }

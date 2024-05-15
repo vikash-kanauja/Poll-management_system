@@ -41,12 +41,13 @@ const Poll = () => {
         });
         return { ...poll, optionList: updatedOptions };
       }
+      
       return poll;
     });
     setPolls(updatedPolls);
     dispatch(votedPollOption(optionId));
   };
-
+  
   const showDeleteModal = (poll) => {
     setSelectedPoll(poll);
     setShowDeletedModal(true);
@@ -61,14 +62,13 @@ const Poll = () => {
     setShowPollChart(true);
     setSelectedPoll(poll);
   };
-
   return pollList?.length === 0 ? (
     <div className="text-center w-full min-h-screen mx-auto flex bg-gray-200 justify-center items-center ">
       <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-8 border-t-blue-600" />
     </div>
   ) : ( <div className=' min-h-screen mx-auto bg-gray-200 p-4 '>
     <h1 className="text-4xl font-semibold text-center py-4">Poll List</h1>
-    <div className="flex gap-6 justify-center flex-wrap items-center ">
+    <div className="flex gap-8 justify-start flex-wrap items-center ">
       {
         polls.map((poll, index) => {
           return <PollItems
@@ -112,7 +112,7 @@ const Poll = () => {
         heading={"Delete"}
         message={"Are You Sure? you want delete this item "}
         clickOkButton={deletePoll}
-        btnColor={"bg-red-500"}
+        buttonColor={"bg-red-500"}
       />
     )}
 
