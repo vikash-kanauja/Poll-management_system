@@ -5,8 +5,6 @@ import { getUser } from '../redux/reducers/authSlice';
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { FaChartArea } from "react-icons/fa";
-
-
 import { ADMIN_ID } from '../utils/constantValue';
 
 const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}) => {
@@ -14,11 +12,6 @@ const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}
     const [voted, setVoted] = useState(false);
 
     const { user } = useSelector((state) => state.auth);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getUser());
-    }, []);
 
     useEffect(() => {
         const votedPollStatus =
