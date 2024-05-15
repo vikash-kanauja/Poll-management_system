@@ -36,21 +36,19 @@ const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}
     const submitVote = (e) => {
         e.preventDefault();
         if (!voted && selectedOption) {
+            increaseVoteCount(poll.id, selectedOption);
             const votedPollStatus =
                 JSON.parse(localStorage.getItem("VotedPollsOptions")) || {};
             votedPollStatus[poll.id] = selectedOption;
             localStorage.setItem(
                 "VotedPollsOptions",
                 JSON.stringify(votedPollStatus)
-            );
-            increaseVoteCount(poll.id, selectedOption);
+            );   
             setVoted(true);
         }
     };
 
     return (
-        
-
             <div className=" py-4 px-4 md:pb-8 border w-[100%] md:w-[45%]  lg:w-[30%] xl:w-[22%] rounded-lg drop-shadow-md bg-white">
             {user?.roleId === ADMIN_ID && (
                     <div className="flex gap-4 justify-end mb-3 mr-2 drop-shadow-md">
@@ -100,10 +98,8 @@ const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}
                             {voted ? "Voted" : "Submit"}
                         </button>
                     </div>
-                </form>
-                
+                </form> 
             </div>
-
     )
 }
 

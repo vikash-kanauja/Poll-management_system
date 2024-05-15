@@ -62,6 +62,7 @@ const Poll = () => {
     setShowPollChart(true);
     setSelectedPoll(poll);
   };
+  
   return pollList?.length === 0 ? (
     <div className="text-center w-full min-h-screen mx-auto flex bg-gray-200 justify-center items-center ">
       <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-8 border-t-blue-600" />
@@ -93,7 +94,7 @@ const Poll = () => {
           <div className="flex items-center">
             <div className="relative w-5 h-5">
               <div className="w-full h-full rounded-full absolute "></div>
-              <div className="w-full h-full rounded-full animate-spin absolute border-4 border-solid border-green-500 border-t-transparent"></div>
+              <div className="w-full h-full rounded-full animate-spin absolute border-4 border-solid border-black  border-t-transparent"></div>
             </div>
           </div>
         ) : (
