@@ -49,9 +49,9 @@ const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}
     };
 
     return (
-        <div>
+        
 
-            <div className=" py-4 px-4 md:pb-8 border w-[310px] rounded-lg drop-shadow-md bg-white">
+            <div className=" py-4 px-4 md:pb-8 border w-[100%] md:w-[45%]  lg:w-[30%] xl:w-[22%] rounded-lg drop-shadow-md bg-white">
             {user?.roleId === ADMIN_ID && (
                     <div className="flex gap-4 justify-end mb-3 mr-2 drop-shadow-md">
                         <MdDelete
@@ -104,7 +104,6 @@ const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}
                 
             </div>
 
-        </div>
     )
 }
 
