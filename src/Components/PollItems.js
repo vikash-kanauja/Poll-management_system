@@ -9,7 +9,7 @@ import { FaChartArea } from "react-icons/fa";
 
 import { ADMIN_ID } from '../utils/constantValue';
 
-const PollItems = ({ poll, increaseVoteCount,showDeleteModal }) => {
+const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}) => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [voted, setVoted] = useState(false);
 
@@ -62,6 +62,7 @@ const PollItems = ({ poll, increaseVoteCount,showDeleteModal }) => {
                             <FaEdit className="text-green-600 text-lg cursor-pointer drop-shadow-md" />
                         </Link>
                         <FaChartArea
+                            onClick={()=>showPollChartModal(poll)}
                             className=" text-blue-400 text-lg cursor-pointer drop-shadow-md"
                         />
                     </div>

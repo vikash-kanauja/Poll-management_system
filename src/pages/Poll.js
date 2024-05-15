@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPollList, votedPollOption, deleteSinglePoll } from "../redux/reducers/pollListReducer";
 import PollItems from "../Components/PollItems";
 import Modal from "../Components/Modal";
+import ChartModal from "../Components/ChartModal";
 const Poll = () => {
   const [pageNo, setPageNo] = useState(1);
   const [polls, setPolls] = useState([])
   const [showDeletedNodal, setShowDeletedModal] = useState(false)
+  const [showPollChart,setShowPollChart] = useState(false)
   const [selectedPoll, setSelectedPoll] = useState(null)
 
   const dispatch = useDispatch()
@@ -55,12 +57,16 @@ const Poll = () => {
     setSelectedPoll(null);
     setPolls(polls.filter((poll) => poll.id !== selectedPoll.id));
   };
+  const showPollChartModal = (poll) => {
+    setShowPollChart(true);
+    setSelectedPoll(poll);
+  };
 
   return pollList?.length === 0 ? (
-    <div className="text-center w-full min-h-screen mx-auto w-full flex justify-center items-center ">
-      <div class="border-gray-300 h-10 w-10 animate-spin rounded-full border-8 border-t-blue-600" />
+    <div className="text-center w-full min-h-screen mx-auto flex bg-gray-200 justify-center items-center ">
+      <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-8 border-t-blue-600" />
     </div>
-  ) : ( <div className='min-h-screen  mx-auto bg-gray-200 '>
+  ) : ( <div className=' min-h-screen mx-auto bg-gray-200 p-4 '>
     <h1 className="text-4xl font-semibold text-center py-4">Poll List</h1>
     <div className="flex gap-6 justify-center flex-wrap items-center ">
       {
@@ -69,17 +75,18 @@ const Poll = () => {
             poll={poll}
             key={index}
             increaseVoteCount={increaseVoteCount}
-            showDeleteModal={showDeleteModal} />
+            showDeleteModal={showDeleteModal} 
+            showPollChartModal={showPollChartModal}/>
         })
       }
     </div>
-    <div className="text-center">
+    <div className="text-center m-4">
       <button
       onClick={() =>
         setPageNo((prevPageNumber) => prevPageNumber + 1)
       }
-      className={`mx-auto w-[120px] py-2 mt-10 px-4 ${pollListLength !== 10 ? "bg-gray-400" : "bg-blue-400"
-        } rounded-md mb-10`}
+      className={`mx-auto w-[120px] py-2 m-5 px-4 ${pollListLength !== 10 ? "bg-gray-400" : "bg-blue-400"
+        } rounded-md  flex justify-center`}
       disabled={pollListLength !== 10}
       >
         {loading ? (
@@ -94,6 +101,9 @@ const Poll = () => {
         )}
       </button>
     </div>
+    {showPollChart && (
+        <ChartModal data={selectedPoll} setShowPollChart={setShowPollChart} />
+      )}
     {showDeletedNodal && (
       <Modal
         buttonText={"Delete"}
