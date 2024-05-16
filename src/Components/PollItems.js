@@ -40,7 +40,6 @@ const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}
             setVoted(true);
         }
     };
-
     return (
             <div className=" py-4 px-4 md:pb-8 border w-[100%] md:w-[45%]  lg:w-[30%] xl:w-[22%] rounded-lg drop-shadow-md bg-white">
             {user?.roleId === ADMIN_ID && (
@@ -49,7 +48,7 @@ const PollItems = ({ poll, increaseVoteCount,showDeleteModal,showPollChartModal}
                             onClick={()=>showDeleteModal(poll)}
                             className=" text-red-500 text-lg cursor-pointer"
                         />
-                        <Link to={`/editpoll/${poll.id}`} state={poll}>
+                        <Link to={`/addpoll/${poll.id}`} state={poll}>
                             <FaEdit className="text-green-600 text-lg cursor-pointer drop-shadow-md" />
                         </Link>
                         <FaChartArea
