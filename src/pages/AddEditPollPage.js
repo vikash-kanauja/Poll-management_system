@@ -48,12 +48,14 @@ const AddEditPoll = () => {
       }
     }
   };
-
   useEffect(() => {
     if (id) {
       getSinglePollDetails();
+    } else {
+      setNewPollData({ title: "", optionTitle: "" });
+      setOptions([]);
     }
-  }, []);
+  }, [id]);
 
   const handleOptionChange = (e) => {
     setNewPollData({ ...newPollData, [e.target.name]: e.target.value });
@@ -61,7 +63,6 @@ const AddEditPoll = () => {
   };
 
   const handleAddOption = async () => {
-
     const { newErrors, isVallid } = validateAddEditForm({
       optionTitle: newPollData.optionTitle,
     });
@@ -172,7 +173,6 @@ const AddEditPoll = () => {
               onChange={handleOptionChange}
             />
             <p className="px-2 text-sm text-red-500">{errors.title}</p>
-            {/* <ErrorComponent errorMessage={errors.title} /> */}
           </div>
           <div className="form-add-option ">
             <p className="add-option">Option</p>
@@ -210,7 +210,7 @@ const AddEditPoll = () => {
                   >
                     <FaEdit />
                   </button>
-                  <button
+                  {options.length > 2 && (   <button
                     className=" text-red-500 text-lg cursor-pointer"
                     onClick={() => {
                       setSelectedIndex(index);
@@ -218,7 +218,7 @@ const AddEditPoll = () => {
                     }}
                   >
                     <MdDelete />
-                  </button>
+                  </button>)}
                 </div>
               </div>
             ))}

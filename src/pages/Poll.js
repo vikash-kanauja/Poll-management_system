@@ -69,7 +69,7 @@ const Poll = () => {
     </div>
   ) : (<div className=' min-h-screen mx-auto bg-gray-200 p-4 '>
     <h1 className="text-4xl font-semibold text-center py-4">Poll List</h1>
-    <div className="flex gap-8 md:gap-12 xl:gap-8 xl:gap-14 flex-wrap items-center ">
+    <div className="flex gap-8 md:gap-12 xl:gap-8 xl:gap-14 xl:pl-10 2xl:pl-20 flex-wrap items-center ">
       {
         polls.map((poll, index) => {
           return <PollItems

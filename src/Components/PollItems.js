@@ -46,7 +46,7 @@ const PollItems = ({ poll, increaseVoteCount, showDeleteModal, showPollChartModa
                         onClick={() => showDeleteModal(poll)}
                         className=" text-red-500 text-lg cursor-pointer"
                     />
-                    <Link to={`/addpoll/${poll.id}`} state={poll}>
+                    <Link to={`/editPoll/${poll.id}`} state={poll}>
                         <FaEdit className="text-green-600 text-lg cursor-pointer drop-shadow-md" />
                     </Link>
                     <FaChartArea

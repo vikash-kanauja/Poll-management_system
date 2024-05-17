@@ -11,7 +11,6 @@ import Navbar from "./Components/Navbar";
 import AddEditPollPage from "./pages/AddEditPollPage";
 
 function App() {
-
   axiosInterceptor();
   return (
     <div className="App">
@@ -35,8 +34,8 @@ function App() {
             <PrivateRoute Component={AddEditPollPage} redirectTo="/addPoll" />}
         />
         <Route
-          path="/addPoll/:id"
-          element={<PrivateRoute Component={AddEditPollPage} redirectTo="/addpoll" />}
+          path="/editPoll/:id"
+          element={<PrivateRoute Component={AddEditPollPage} redirectTo="/editpoll" />}
         />
         <Route
           path="/createUser"
@@ -45,12 +44,6 @@ function App() {
         <Route
           path="/users"
           element={<PrivateRoute Component={Users} redirectTo="/users" />}
-        />
-        <Route
-          path="/addedit"
-          element={
-            <PrivateRoute Component={AddEditPollPage} redirectTo="/addedit" />
-          }
         />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
