@@ -7,8 +7,8 @@ import optionReducer from './reducers/optionReducer';
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    roles:rollListSlice,
-    pollList:pollListReducer, 
+    roles: rollListSlice,
+    pollList: pollListReducer,
     option: optionReducer,
   },
 });

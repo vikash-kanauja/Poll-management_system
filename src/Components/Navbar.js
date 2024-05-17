@@ -44,7 +44,6 @@ const Navbar = () => {
                             );
                         })}
                     </ul>
-
                     <div
                         className="flex items-center relative gap-2 md:mr-18 md:mr-5 "
                         onClick={() => {
@@ -54,7 +53,6 @@ const Navbar = () => {
                             <div className='flex items-center'>
                                 <FaUserCircle className='xl:text-4xl 2xl:text-4xl' />
                             </div>
-
                             <div className=''>
                                 <h1 className="text-xs lg:text-xs xl:text-sm 2xl:text-sm">{`${userData?.firstName} ${userData?.lastName}`}</h1>
                                 <p className="text-xs xl:text-sm 2xl:text-sm">{userData?.email}</p>
