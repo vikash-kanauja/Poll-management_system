@@ -28,7 +28,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { errors, isValid } = validateLogin(formData);
     if (isValid) {
 
@@ -36,7 +35,7 @@ const Login = () => {
         const res = await dispatch(loginUser(formData));
         if (res.payload.status === 200) {
           navigate("/polling");
-        } else if (res.payload.status === 401) {
+        } else if (res.payload && res.payload.status === 401) {
           setError({ passwordError: res.payload.data.message });
         } else {
           setError({ passwordError: res.payload.data.message });

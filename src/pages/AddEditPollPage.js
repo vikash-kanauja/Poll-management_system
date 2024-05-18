@@ -1,6 +1,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 import {
   addPoll,
   getSinglePoll,
@@ -8,7 +11,6 @@ import {
   updatePollTitle,
 } from "../redux/reducers/pollListReducer";
 import { validateAddEditForm } from "../utils/validation";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Modal from "../Components/Modal";
 
 import {
@@ -16,10 +18,8 @@ import {
   deleteOption,
   updateOption,
 } from "../redux/reducers/optionReducer";
-import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
 
-const AddEditPoll = () => {
+const AddEditPollPage = () => {
   const { id } = useParams();
   const { state } = useLocation();
   const [newPollData, setNewPollData] = useState({
@@ -28,7 +28,7 @@ const AddEditPoll = () => {
   });
   const [options, setOptions] = useState([]);
   const [errors, setErrors] = useState({ title: "", optionTitle: "" });
-  const [showModal, setShowModal] = useState(false);
+  const [showAddEditModal, setShowModal] = useState(false);
   const [showDeletedModal, setShowDeletedModal] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [editOption, setEditOption] = useState(null);
@@ -62,7 +62,7 @@ const AddEditPoll = () => {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
-  const handleAddOption = async () => {
+  const addOptions = async () => {
     const { newErrors, isVallid } = validateAddEditForm({
       optionTitle: newPollData.optionTitle,
     });
@@ -102,7 +102,7 @@ const AddEditPoll = () => {
     }
   };
 
-  const handleDeleteOption = () => {
+  const deleteOptions = () => {
     if (id) {
       const deleteOptionId = options[selectedIndex].id;
       dispatch(deleteOption(deleteOptionId));
@@ -114,7 +114,7 @@ const AddEditPoll = () => {
     setSelectedIndex(null);
   };
 
-  const handleUpdateOption = (index) => {
+  const updateOptions = (index) => {
     const option = options[index];
     setNewPollData({ ...newPollData, optionTitle: option?.optionTitle });
     setEditOption({ index, id: option?.id });
@@ -188,7 +188,7 @@ const AddEditPoll = () => {
               />
               <button
                 className=" bg-blue-500 text-white rounded-r-md px-4 py-1"
-                onClick={() => handleAddOption()}
+                onClick={() => addOptions()}
               >
                 Add
               </button>
@@ -206,11 +206,11 @@ const AddEditPoll = () => {
                 <div>
                   <button
                     className="mx-2"
-                    onClick={() => handleUpdateOption(index)}
+                    onClick={() => updateOptions(index)}
                   >
                     <FaEdit />
                   </button>
-                  {options.length > 2 && (   <button
+                  {options.length > 2 && (<button
                     className=" text-red-500 text-lg cursor-pointer"
                     onClick={() => {
                       setSelectedIndex(index);
@@ -238,7 +238,7 @@ const AddEditPoll = () => {
             </button>
           </div>
         </div>
-        {showModal && (
+        {showAddEditModal && (
           <Modal
             heading={"Successfully"}
             message={`Poll ${id ? "updated" : "Added"
@@ -257,7 +257,7 @@ const AddEditPoll = () => {
             cancleButton={() => setShowDeletedModal(false)}
             heading={"Delete"}
             message={"Are You Sure? you want delete this item "}
-            clickOkButton={handleDeleteOption}
+            clickOkButton={deleteOptions}
             buttonColor={"bg-red-500"}
           />
         )}
@@ -266,4 +266,4 @@ const AddEditPoll = () => {
   );
 };
 
-export default AddEditPoll;
+export default AddEditPollPage;

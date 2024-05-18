@@ -56,7 +56,7 @@ const PollItems = ({ poll, increaseVoteCount, showDeleteModal, showPollChartModa
                 </div>
             )}
             <div className="text-center mb-4">
-                <h2 className="text-lg lg:text-2xl font-semibold drop-shadow-md">{poll.title}</h2>
+                <h2 className="text-lg lg:text-2xl font-semibold drop-shadow-md break-words">{poll.title}</h2>
             </div>
             <form onSubmit={submitVote}>
                 {poll.optionList?.map((option, index) => (
