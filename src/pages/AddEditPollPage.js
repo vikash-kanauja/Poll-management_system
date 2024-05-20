@@ -32,7 +32,7 @@ const AddEditPollPage = () => {
   const [showDeletedModal, setShowDeletedModal] = useState(false);
   const [deleteSelectedIndex, setDeleteSelectedIndex] = useState(null);
   const [editOptionId, setEditOptionId] = useState(null);
-  const { loading } = useSelector((state) => state.pollList);
+  const { loading :isPollSubmitting } = useSelector((state) => state.pollList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -244,9 +244,9 @@ const AddEditPollPage = () => {
               type="button"
               className=" bg-green-600 text-white text-semibold py-2 px-4 rounded transition duration-200"
               onClick={() => onFormSubmit()}
-              disabled={loading}
+              disabled={isPollSubmitting}
             >
-              {loading ? (
+              {isPollSubmitting ? (
                 <div className="inline-block h-5 w-5 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-secondary motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
               ) : (
                 id ? "Update" : "Add Poll"

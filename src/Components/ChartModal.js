@@ -17,7 +17,9 @@ const ChartModal = ({ data, setShowPollChart }) => {
     const optionList = pollData.optionList.map(
       ({ optionTitle, voteCount }) => ({ optionTitle, voteCount })
     );
-    const labels = optionList.map((items) => items.optionTitle);
+    const labels = optionList.map(({ optionTitle }) => {
+      return optionTitle.length > 10 ? optionTitle.substring(0, 10) + "..." : optionTitle;
+    });
     setChartData({
       labels: labels,
       datasets: [

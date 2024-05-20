@@ -61,7 +61,7 @@ const Poll = () => {
     setShowPollChart(true);
     setSelectedPoll(poll);
   };
-
+  console.log(polls,"POlla");
   return pollList?.length === 0 ? (
     <div className="text-center w-full min-h-screen mx-auto flex bg-gray-200 justify-center items-center ">
       <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-8 border-t-blue-600" />
@@ -69,8 +69,10 @@ const Poll = () => {
   ) : (<div className=' min-h-screen mx-auto bg-gray-200 p-4 '>
     <h1 className="text-4xl font-semibold text-center py-4">Poll List</h1>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-8 2xl:gap-10">
+    
       {
-        polls?.map((poll, index) => {
+        
+        polls.map((poll, index) => {
           return <PollItems
             poll={poll}
             key={index}
@@ -79,6 +81,7 @@ const Poll = () => {
             showPollChartModal={showPollChartModal} />
         })
       }
+    
     </div>
     <div className="text-center m-4">
       <button
