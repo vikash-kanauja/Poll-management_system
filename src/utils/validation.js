@@ -68,7 +68,7 @@ export const validateLogin = (formData) => {
 
 
 export const validateAddEditForm = (data) => {
-    const newErrors = { title: "", optionTitle: "" };
+    const newErrors = { title: "", optionTitle: "" , optionLimit:"" };
     let isVallid = true;
   
     if (data.title?.trim() === "" || data.title?.length < 10) {
@@ -80,11 +80,10 @@ export const validateAddEditForm = (data) => {
       newErrors.optionTitle = "Option must not be empty";
       isVallid = false;
     }
-  
     if (data.options?.length < 2) {
-      newErrors.optionTitle = "There must be at least two options";
-      isVallid = false;
-    }
+        newErrors.optionLimit = "There must be at least two options";
+        isVallid = false;
+      }
   
     return { newErrors, isVallid };
   };

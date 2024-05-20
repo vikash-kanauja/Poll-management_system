@@ -27,11 +27,11 @@ const AddEditPollPage = () => {
     optionTitle: "",
   });
   const [options, setOptions] = useState([]);
-  const [errors, setErrors] = useState({ title: "", optionTitle: "" });
-  const [showAddEditModal, setShowModal] = useState(false);
+  const [errors, setErrors] = useState({ title: "", optionTitle: "", optionLimit: "" });
+  const [showAddEditModal, setAddEditShowModal] = useState(false);
   const [showDeletedModal, setShowDeletedModal] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const [editOption, setEditOption] = useState(null);
+  const [deleteSelectedIndex, setDeleteSelectedIndex] = useState(null);
+  const [editOptionId, setEditOptionId] = useState(null);
   const { loading } = useSelector((state) => state.pollList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,6 +53,7 @@ const AddEditPollPage = () => {
       getSinglePollDetails();
     } else {
       setNewPollData({ title: "", optionTitle: "" });
+      setErrors({title: "", optionTitle: "", optionLimit: "" })
       setOptions([]);
     }
   }, [id]);
@@ -62,28 +63,28 @@ const AddEditPollPage = () => {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
-  const addOptions = async () => {
+  const addPollOptions = async () => {
     const { newErrors, isVallid } = validateAddEditForm({
       optionTitle: newPollData.optionTitle,
     });
     if (isVallid) {
       setOptions([...options, { optionTitle: newPollData.optionTitle }]);
-      if (editOption) {
+      if (editOptionId) {
         const newOptions = [...options];
-        newOptions[editOption.index].optionTitle = newPollData.optionTitle;
+        newOptions[editOptionId.index].optionTitle = newPollData.optionTitle;
         setOptions(newOptions);
       }
 
-      if (id && editOption?.id) {
+      if (id && editOptionId?.id) {
         dispatch(
           updateOption({
-            id: editOption.id,
+            id: editOptionId.id,
             editedOption: newPollData.optionTitle,
           })
         );
       }
 
-      if (id && !editOption?.id) {
+      if (id && !editOptionId?.id) {
         const result = await dispatch(
           addOption({
             id,
@@ -95,35 +96,44 @@ const AddEditPollPage = () => {
           setOptions(newOptions);
         }
       }
-      setEditOption(null);
+      setEditOptionId(null);
       setNewPollData({ ...newPollData, optionTitle: "" });
+      setErrors({...newErrors,optionLimit:""});
     } else {
       setErrors(newErrors);
     }
   };
 
-  const deleteOptions = () => {
+  const deletePollOptions = () => {
     if (id) {
-      const deleteOptionId = options[selectedIndex].id;
+      const deleteOptionId = options[deleteSelectedIndex].id;
+      const votedPollsOptions =
+        JSON.parse(localStorage.getItem("VotedPollsOptions")) || {};
+      if (votedPollsOptions[id] === deleteOptionId)
+        delete votedPollsOptions[id]
+      localStorage.setItem(
+        "VotedPollsOptions",
+        JSON.stringify(votedPollsOptions)
+      );
       dispatch(deleteOption(deleteOptionId));
     }
     const newOptions = [...options];
-    newOptions.splice(selectedIndex, 1);
+    newOptions.splice(deleteSelectedIndex, 1);
     setOptions(newOptions);
     setShowDeletedModal(false);
-    setSelectedIndex(null);
+    setDeleteSelectedIndex(null);
   };
 
-  const updateOptions = (index) => {
+  const updatePollOptions = (index) => {
     const option = options[index];
     setNewPollData({ ...newPollData, optionTitle: option?.optionTitle });
-    setEditOption({ index, id: option?.id });
+    setEditOptionId({ index, id: option?.id });
 
   };
 
   const handleShowModal = (data) => {
     if (data?.payload?.status === 200) {
-      setShowModal(true);
+      setAddEditShowModal(true);
     }
   };
 
@@ -142,7 +152,7 @@ const AddEditPollPage = () => {
         if (state.title !== newPollData.title) {
           result = await dispatch(updatePollTitle({ id, newPoll }));
         }
-        setShowModal(true);
+        setAddEditShowModal(true);
       } else {
         result = await dispatch(addPoll(newPoll));
         handleShowModal(result);
@@ -188,7 +198,7 @@ const AddEditPollPage = () => {
               />
               <button
                 className=" bg-blue-500 text-white rounded-r-md px-4 py-1"
-                onClick={() => addOptions()}
+                onClick={() => addPollOptions()}
               >
                 Add
               </button>
@@ -206,22 +216,28 @@ const AddEditPollPage = () => {
                 <div>
                   <button
                     className="mx-2"
-                    onClick={() => updateOptions(index)}
+                    onClick={() => updatePollOptions(index)}
                   >
                     <FaEdit />
                   </button>
-                  {options.length > 2 && (<button
+                  <button
                     className=" text-red-500 text-lg cursor-pointer"
                     onClick={() => {
-                      setSelectedIndex(index);
-                      setShowDeletedModal(true);
+                      if (options.length > 2) {
+                        setDeleteSelectedIndex(index);
+                        setShowDeletedModal(true);
+                        setErrors({ ...errors, optionLimit: "" });
+                      } else {
+                        setErrors({ ...errors, optionLimit: "Can't delete option. There must be at least two options" });
+                      }
                     }}
                   >
                     <MdDelete />
-                  </button>)}
+                  </button>
                 </div>
               </div>
             ))}
+            { errors.optionLimit &&  <p className="px-2 text-sm text-red-500">{errors.optionLimit}</p>}
           </div>
           <div className="w-full text-center mt-6">
             <button
@@ -246,7 +262,7 @@ const AddEditPollPage = () => {
             buttonText={"Ok"}
             clickOkButton={() => {
               navigate("/polling");
-              setShowModal(false);
+              setAddEditShowModal(false);
             }}
           />
         )}
@@ -257,7 +273,7 @@ const AddEditPollPage = () => {
             cancleButton={() => setShowDeletedModal(false)}
             heading={"Delete"}
             message={"Are You Sure? you want delete this item "}
-            clickOkButton={deleteOptions}
+            clickOkButton={deletePollOptions}
             buttonColor={"bg-red-500"}
           />
         )}

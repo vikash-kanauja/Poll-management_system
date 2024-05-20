@@ -41,7 +41,6 @@ const Poll = () => {
         });
         return { ...poll, optionList: updatedOptions };
       }
-
       return poll;
     });
     setPolls(updatedPolls);
@@ -69,9 +68,9 @@ const Poll = () => {
     </div>
   ) : (<div className=' min-h-screen mx-auto bg-gray-200 p-4 '>
     <h1 className="text-4xl font-semibold text-center py-4">Poll List</h1>
-    <div className="flex gap-8 md:gap-12 xl:gap-8 xl:gap-14 xl:pl-10 2xl:pl-20 flex-wrap items-center ">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-8 2xl:gap-10">
       {
-        polls.map((poll, index) => {
+        polls?.map((poll, index) => {
           return <PollItems
             poll={poll}
             key={index}
