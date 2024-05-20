@@ -6,13 +6,11 @@ import Poll from "./pages/Poll";
 import Users from "./pages/Users";
 import PageNotFound from "./pages/PageNotFound"
 import Signup from "./pages/Signup";
+import CreateUser from "./pages/CreateUser";
 import Navbar from "./Components/Navbar";
-import AddPoll from "./pages/AddPoll";
-import CreateUser from "./Components/CreateUser";
-import EditPollList from "./pages/EditPollList";
+import AddEditPollPage from "./pages/AddEditPollPage";
 
 function App() {
-
   axiosInterceptor();
   return (
     <div className="App">
@@ -31,8 +29,13 @@ function App() {
           element={<PrivateRoute Component={Signup} redirectTo="/signup" />}
         />
         <Route
-          path="/addpoll"
-          element={<PrivateRoute Component={AddPoll} redirectTo="/addpoll" />}
+          path="/addPoll"
+          element={
+            <PrivateRoute Component={AddEditPollPage} redirectTo="/addPoll" />}
+        />
+        <Route
+          path="/editPoll/:id"
+          element={<PrivateRoute Component={AddEditPollPage} redirectTo="/editpoll" />}
         />
         <Route
           path="/createUser"
@@ -41,12 +44,6 @@ function App() {
         <Route
           path="/users"
           element={<PrivateRoute Component={Users} redirectTo="/users" />}
-        />
-        <Route
-          path="/editPoll/:id"
-          element={
-            <PrivateRoute Component={EditPollList} redirectTo="/editPoll" />
-          }
         />
         <Route path="/*" element={<PageNotFound />} />
       </Routes>

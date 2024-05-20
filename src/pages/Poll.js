@@ -8,7 +8,7 @@ const Poll = () => {
   const [pageNo, setPageNo] = useState(1);
   const [polls, setPolls] = useState([])
   const [showDeletedNodal, setShowDeletedModal] = useState(false)
-  const [showPollChart,setShowPollChart] = useState(false)
+  const [showPollChart, setShowPollChart] = useState(false)
   const [selectedPoll, setSelectedPoll] = useState(null)
 
   const dispatch = useDispatch()
@@ -41,13 +41,12 @@ const Poll = () => {
         });
         return { ...poll, optionList: updatedOptions };
       }
-      
       return poll;
     });
     setPolls(updatedPolls);
     dispatch(votedPollOption(optionId));
   };
-  
+
   const showDeleteModal = (poll) => {
     setSelectedPoll(poll);
     setShowDeletedModal(true);
@@ -62,33 +61,34 @@ const Poll = () => {
     setShowPollChart(true);
     setSelectedPoll(poll);
   };
-  
+  console.log(polls,"POlla");
   return pollList?.length === 0 ? (
     <div className="text-center w-full min-h-screen mx-auto flex bg-gray-200 justify-center items-center ">
       <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-8 border-t-blue-600" />
     </div>
-  ) : ( <div className=' min-h-screen mx-auto bg-gray-200 p-4 '>
+  ) : (<div className=' min-h-screen mx-auto bg-gray-200 p-4 '>
     <h1 className="text-4xl font-semibold text-center py-4">Poll List</h1>
-    <div className="flex gap-8 md:gap-12 xl:gap-8 xl:gap-14 flex-wrap items-center ">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-8 2xl:gap-10">
       {
         polls.map((poll, index) => {
           return <PollItems
             poll={poll}
             key={index}
             increaseVoteCount={increaseVoteCount}
-            showDeleteModal={showDeleteModal} 
-            showPollChartModal={showPollChartModal}/>
+            showDeleteModal={showDeleteModal}
+            showPollChartModal={showPollChartModal} />
         })
       }
+    
     </div>
     <div className="text-center m-4">
       <button
-      onClick={() =>
-        setPageNo((prevPageNumber) => prevPageNumber + 1)
-      }
-      className={`mx-auto w-[120px] py-2 m-5 px-4 ${pollListLength !== 10 ? "bg-gray-400" : "bg-blue-400"
-        } rounded-md  flex justify-center`}
-      disabled={pollListLength !== 10}
+        onClick={() =>
+          setPageNo((prevPageNumber) => prevPageNumber + 1)
+        }
+        className={`mx-auto w-[120px] py-2 m-5 px-4 ${pollListLength !== 10 ? "bg-gray-400" : "bg-blue-400"
+          } rounded-md  flex justify-center`}
+        disabled={pollListLength !== 10}
       >
         {loading ? (
           <div className="flex items-center">
@@ -103,8 +103,8 @@ const Poll = () => {
       </button>
     </div>
     {showPollChart && (
-        <ChartModal data={selectedPoll} setShowPollChart={setShowPollChart} />
-      )}
+      <ChartModal data={selectedPoll} setShowPollChart={setShowPollChart} />
+    )}
     {showDeletedNodal && (
       <Modal
         buttonText={"Delete"}
