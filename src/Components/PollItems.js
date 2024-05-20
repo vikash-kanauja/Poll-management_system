@@ -39,7 +39,7 @@ const PollItems = ({ poll, increaseVoteCount, showDeleteModal, showPollChartModa
         }
     };
     return (
-            <div className=' py-4 px-4 md:pb-8 border rounded-lg drop-shadow-md bg-white'>
+        <div className=' py-4 px-4 md:pb-8 border rounded-lg drop-shadow-md bg-white'>
             {user?.roleId === ADMIN_ID && (
                 <div className="flex gap-4 justify-end mb-3 mr-2 drop-shadow-md">
                     <MdDelete
@@ -81,10 +81,9 @@ const PollItems = ({ poll, increaseVoteCount, showDeleteModal, showPollChartModa
                 <div className=" w-full mx-auto flex justify-center drop-shadow-md ">
                     <button
                         type="submit"
-                        className={` ${voted ? "bg-gray-400" : "bg-blue-700"
-                            } text-white mt-5  py-2 px-4 rounded ${!voted && "hover:bg-blue-600"
-                            } transition duration-200`}
-                        disabled={voted}>
+                        className={` ${voted || !selectedOption ? "bg-gray-400" : "bg-blue-700"
+                            } text-white mt-5  py-2 px-4 rounded `}
+                        disabled={voted || !selectedOption}>
                         {voted ? "Voted" : "Submit"}
                     </button>
                 </div>
