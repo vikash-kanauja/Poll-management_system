@@ -80,7 +80,7 @@ export const validateAddEditForm = (data) => {
       newErrors.optionTitle = "Option must not be empty";
       isVallid = false;
     }
-    if (data.options?.length < 2) {
+    if (data.pollOptions?.length < 2) {
         newErrors.optionLimit = "There must be at least two options";
         isVallid = false;
       }

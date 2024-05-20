@@ -26,7 +26,7 @@ const AddEditPollPage = () => {
     title: "",
     optionTitle: "",
   });
-  const [options, setOptions] = useState([]);
+  const [pollOptions, setPollOptions] = useState([]);
   const [errors, setErrors] = useState({ title: "", optionTitle: "", optionLimit: "" });
   const [showAddEditModal, setAddEditShowModal] = useState(false);
   const [showDeletedModal, setShowDeletedModal] = useState(false);
@@ -39,12 +39,12 @@ const AddEditPollPage = () => {
   const getSinglePollDetails = async () => {
     if (state) {
       setNewPollData({ ...newPollData, title: state.title });
-      setOptions(state.optionList);
+      setPollOptions(state.optionList);
     } else {
       const result = await dispatch(getSinglePoll(id));
       if (result?.payload?.status === 200) {
         setNewPollData({ ...newPollData, title: result?.payload?.data?.title });
-        setOptions(result?.payload?.data?.optionList);
+        setPollOptions(result?.payload?.data?.optionList);
       }
     }
   };
@@ -54,7 +54,7 @@ const AddEditPollPage = () => {
     } else {
       setNewPollData({ title: "", optionTitle: "" });
       setErrors({title: "", optionTitle: "", optionLimit: "" })
-      setOptions([]);
+      setPollOptions([]);
     }
   }, [id]);
 
@@ -68,11 +68,11 @@ const AddEditPollPage = () => {
       optionTitle: newPollData.optionTitle,
     });
     if (isVallid) {
-      setOptions([...options, { optionTitle: newPollData.optionTitle }]);
+      setPollOptions([...pollOptions, { optionTitle: newPollData.optionTitle }]);
       if (editOptionId) {
-        const newOptions = [...options];
+        const newOptions = [...pollOptions];
         newOptions[editOptionId.index].optionTitle = newPollData.optionTitle;
-        setOptions(newOptions);
+        setPollOptions(newOptions);
       }
 
       if (id && editOptionId?.id) {
@@ -92,8 +92,8 @@ const AddEditPollPage = () => {
           })
         );
         if (result?.payload?.status === 200) {
-          const newOptions = [...options, result?.payload?.data.option];
-          setOptions(newOptions);
+          const newOptions = [...pollOptions, result?.payload?.data.option];
+          setPollOptions(newOptions);
         }
       }
       setEditOptionId(null);
@@ -106,7 +106,7 @@ const AddEditPollPage = () => {
 
   const deletePollOptions = () => {
     if (id) {
-      const deleteOptionId = options[deleteSelectedIndex].id;
+      const deleteOptionId = pollOptions[deleteSelectedIndex].id;
       const votedPollsOptions =
         JSON.parse(localStorage.getItem("VotedPollsOptions")) || {};
       if (votedPollsOptions[id] === deleteOptionId)
@@ -117,15 +117,15 @@ const AddEditPollPage = () => {
       );
       dispatch(deleteOption(deleteOptionId));
     }
-    const newOptions = [...options];
+    const newOptions = [...pollOptions];
     newOptions.splice(deleteSelectedIndex, 1);
-    setOptions(newOptions);
+    setPollOptions(newOptions);
     setShowDeletedModal(false);
     setDeleteSelectedIndex(null);
   };
 
   const updatePollOptions = (index) => {
-    const option = options[index];
+    const option = pollOptions[index];
     setNewPollData({ ...newPollData, optionTitle: option?.optionTitle });
     setEditOptionId({ index, id: option?.id });
 
@@ -140,17 +140,17 @@ const AddEditPollPage = () => {
   const onFormSubmit = async () => {
     const newPoll = {
       title: newPollData.title,
-      options,
+      pollOptions,
     };
     const { newErrors, isVallid } = validateAddEditForm({
-      options,
+      pollOptions,
       title: newPollData.title,
     });
     if (isVallid) {
       let result = {};
       if (id) {
         if (state.title !== newPollData.title) {
-          result = await dispatch(updatePollTitle({ id, newPoll }));
+          result = await dispatch(updatePollTitle({ id, title: newPoll.title  }));
         }
         setAddEditShowModal(true);
       } else {
@@ -207,13 +207,13 @@ const AddEditPollPage = () => {
             <p className="px-2 text-sm text-red-500">{errors.optionTitle}</p>
           </div>
           <div className="flex flex-wrap  gap-2 p-4">
-            {options.map((item, index) => (
+            {pollOptions.map((item, index) => (
               <div
                 className="w-full flex justify-between bg-white border rounded-md p-2 mr-2 drop-shadow-md m-1"
                 key={index}
               >
                 {item.optionTitle}
-                <div>
+                <div className="flex">
                   <button
                     className="mx-2"
                     onClick={() => updatePollOptions(index)}
@@ -223,7 +223,7 @@ const AddEditPollPage = () => {
                   <button
                     className=" text-red-500 text-lg cursor-pointer"
                     onClick={() => {
-                      if (options.length > 2) {
+                      if (pollOptions.length > 2) {
                         setDeleteSelectedIndex(index);
                         setShowDeletedModal(true);
                         setErrors({ ...errors, optionLimit: "" });
