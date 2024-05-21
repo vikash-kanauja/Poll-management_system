@@ -26,10 +26,25 @@ export const signupUser = createAsyncThunk(
         `${process.env.REACT_APP_BASE_URL}/user/register`,
         formData
       );
-      return response;
+      return response.data;
     } catch (error) {
       return error.response;
 
+    }
+  }
+);
+
+export const createUser = createAsyncThunk(
+  "auth/createUser",
+  async (userData) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/user/create`,
+        userData
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(error.message);
     }
   }
 );
@@ -84,6 +99,15 @@ const authSlice = createSlice({
       .addCase(signupUser.rejected, (state) => {
         state.loading = false;
       })
+      .addCase(createUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createUser.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(createUser.rejected, (state) => {
+        state.loading = false;
+      });
   },
 });
 

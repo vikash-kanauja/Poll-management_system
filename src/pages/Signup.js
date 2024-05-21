@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { validateSignup } from "../utils/validation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { signupUser } from "../redux/reducers/authSlice";
+import { signupUser, createUser, getUser } from "../redux/reducers/authSlice";
 import { useDispatch, useSelector } from "react-redux"
 import Modal from "../Components/Modal";
 import { fetchRoles } from '../redux/reducers/rollListSlice';
@@ -29,6 +29,8 @@ const Signup = () => {
     const { loading } = useSelector((state) => state.auth);
     const role = useSelector((state) => state.roles.role);
 
+    const user = useSelector((state) => state.auth.user);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -44,11 +46,16 @@ const Signup = () => {
         setError(errors)
         if (isValid) {
             const { confirmPassword, ...formDataWithoutConfirmPassword } = formData;
-            const res = await dispatch(signupUser(formDataWithoutConfirmPassword));
-            if (res.payload.status === 200) {
+            let res = "";
+            if (user) {
+                res = await dispatch(createUser(formDataWithoutConfirmPassword));
+            } else {
+                res = await dispatch(signupUser(formDataWithoutConfirmPassword));
+            }
+            if (res.payload) {
                 setShowModal(true)
-            } else if (res.payload.status === 500) {
-                setSuccessMessage(res.payload.data);
+            } else if (res.payload === 500) {
+                setSuccessMessage(res.payload?.data);
             }
         } else {
             setError(errors);
@@ -62,13 +69,14 @@ const Signup = () => {
 
     useEffect(() => {
         dispatch(fetchRoles());
+        dispatch(getUser());
     }, []);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-200 py-12 px-4 sm:px-6 lg:px-8">
             <div className="md:max-w-sm 2xl:max-w-md w-full space-y-8 bg-white p-4 rounded-lg">
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Sign Up
+                    {user ? "Create User" : "Signup"}
                 </h2>
                 <form onSubmit={handleSubmit} className="mt-8 space-y-2">
                     <div className="rounded-md  -space-y-px">
@@ -221,15 +229,17 @@ const Signup = () => {
                                         <div className="w-full h-full rounded-full animate-spin absolute border-4 border-solid border-green-500 border-t-transparent"></div>
                                     </div>
                                 </div>
-                            ) : (
-                                "SignUp"
-                            )}
+                            ) :
+                            user ?
+                                ("Create User")
+                                : ("SignUp")
+                            }
                         </button>
                     </div>
                 </form>
-                <div className="">
+                {!user && (<div className="">
                     <p className="text-base text-center font-semibold">Already have an account? <Link className="text-blue-600" to="/">Login</Link></p>
-                </div>
+                </div>)}
 
                 {successMessage && (
                     <div className="mt-4 bg-red-200 text-black-800 p-2 text-center rounded">
@@ -239,7 +249,11 @@ const Signup = () => {
 
                 {showModal && (<Modal
                     heading={"Successfully"}
-                    message={"User signup Succesfully!"}
+                    message={`${
+                        user
+                          ? "User created successfully! click ok to polling page"
+                          : "User signup Succesfully! Click Ok to Login Page."
+                      }`}
                     clickOkButton={modalHandleNavigate}
                     buttonText={"Ok"}
                     col
