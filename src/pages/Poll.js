@@ -61,7 +61,6 @@ const Poll = () => {
     setShowPollChart(true);
     setSelectedPoll(poll);
   };
-  console.log(polls,"POlla");
   return pollList?.length === 0 ? (
     <div className="text-center w-full min-h-screen mx-auto flex bg-gray-200 justify-center items-center ">
       <div className="border-gray-300 h-10 w-10 animate-spin rounded-full border-8 border-t-blue-600" />
