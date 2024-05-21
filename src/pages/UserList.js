@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MdArrowCircleLeft, MdArrowCircleRight } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserList } from '../redux/reducers/userListReducer'
-import { NumberOfUserPerPage } from "../utils/constantValue";
+import { pageLimitRange } from "../utils/constantValue";
 import { ADMIN_ID } from "../utils/constantValue";
 
 const UserList = () => {
@@ -76,7 +76,7 @@ const UserList = () => {
               value={pageLimit}
               onChange={handlePageLimit}
               className="ml-2 border rounded px-1 py-1">
-              {NumberOfUserPerPage.map((value, index) => {
+              {pageLimitRange.map((value, index) => {
                 return (
                   <option key={index} value={value}>
                     {value}
