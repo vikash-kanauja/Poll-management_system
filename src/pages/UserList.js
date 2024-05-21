@@ -3,20 +3,21 @@ import { MdArrowCircleLeft, MdArrowCircleRight } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserList } from '../redux/reducers/userListReducer'
 import { NumberOfUserPerPage } from "../utils/constantValue";
+import { ADMIN_ID } from "../utils/constantValue";
 
 const UserList = () => {
   const [pageNumber, setPageNumber] = useState(1);
-  const [recordPerPage, setRecordPerPage] = useState(5);
+  const [pageLimit, setPageLimit] = useState(10);
   const dispatch = useDispatch();
   const { userList, loading:isUserListLoaded } = useSelector((state) => state.userList);
 
-  const handleUserPerPage = (e) => {
+  const handlePageLimit = (e) => {
     setPageNumber(1)
-    setRecordPerPage(e.target.value)
+    setPageLimit(e.target.value)
   }
   useEffect(() => {
-    dispatch(getUserList({ page: pageNumber, limit: recordPerPage }));
-  }, [pageNumber, recordPerPage]);
+    dispatch(getUserList({ page: pageNumber, limit: pageLimit }));
+  }, [pageNumber, pageLimit]);
 
   return (
     <div className="min-h-screen mx-auto bg-gray-200 p-4">
@@ -60,7 +61,7 @@ const UserList = () => {
                     {user.email}
                   </td>
                   <td className="border-b text-xs sm:text-sm md:text-base px-1 sm:px-4 py-2">
-                    {user.roleId === 1 ? "user" : "admin"}
+                    {user.roleId === ADMIN_ID ? "admin" : "user"}
                   </td>
                 </tr>
               ))
@@ -72,8 +73,8 @@ const UserList = () => {
             <label htmlFor="perPage " className="font-bold ">Entries per page:</label>
             <select
               id="perPage"
-              value={recordPerPage}
-              onChange={handleUserPerPage}
+              value={pageLimit}
+              onChange={handlePageLimit}
               className="ml-2 border rounded px-1 py-1">
               {NumberOfUserPerPage.map((value, index) => {
                 return (
@@ -95,8 +96,8 @@ const UserList = () => {
           <div className="text-md p-2 font-bold">Page {pageNumber}</div>
           <button
             onClick={() => setPageNumber(pageNumber + 1)}
-            disabled={userList?.length < recordPerPage || isUserListLoaded}
-            className={` ${userList?.length < recordPerPage || isUserListLoaded ? "text-gray-500" : "text-blue-800"
+            disabled={userList?.length < pageLimit || isUserListLoaded}
+            className={` ${userList?.length < pageLimit || isUserListLoaded ? "text-gray-500" : "text-blue-800"
               } md:text-3xl  p-1 rounded
              text-xl p-1 border transition duration-200 hover:bg-blue-200`}>
             <MdArrowCircleRight />
