@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import Poll from "./pages/Poll";
 import UserList from "./pages/UserList";
 import PageNotFound from "./pages/PageNotFound"
-import Signup from "./pages/Signup";
+import UserSignupRegister from "./pages/UserSignupRegister";
 import Navbar from "./Components/Navbar";
 import AddEditPollPage from "./pages/AddEditPollPage";
 
@@ -25,7 +25,7 @@ function App() {
         />
         <Route
           path="/signup"
-          element={<PrivateRoute Component={Signup} redirectTo="/signup" />}
+          element={<PrivateRoute Component={UserSignupRegister} redirectTo="/signup" />}
         />
         <Route
           path="/addPoll"
@@ -38,7 +38,7 @@ function App() {
         />
         <Route
           path="/createUser"
-          element={<PrivateRoute Component={Signup} redirectTo="/createUser" />}
+          element={<PrivateRoute Component={UserSignupRegister} redirectTo="/createUser" />}
         />
         <Route
           path="/users"

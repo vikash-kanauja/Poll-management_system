@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Modal from "../Components/Modal";
 import { fetchRoles } from '../redux/reducers/rollListSlice';
 
-const Signup = () => {
+const UserSignupRegister = () => {
     const dispatch = useDispatch()
     const [formData, setFormData] = useState({
         firstName: "",
@@ -265,4 +265,4 @@ const Signup = () => {
     );
 };
 
-export default Signup;
+export default UserSignupRegister;
