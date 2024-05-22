@@ -1,5 +1,5 @@
 
-export const validateSignup = (formData) => {
+export const validateFormData = (formData) => {
     const errors = {};
     let isValid = true;
 
@@ -32,8 +32,8 @@ export const validateSignup = (formData) => {
     if (!formData.password.trim()) {
         errors.password = "Password is required";
         isValid = false;
-    } else if (formData.password.trim().length < 8) {
-        errors.password = "Password must be at least 8 characters long";
+    } else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(formData.password)) {
+        errors.password = "Password must contain at least one uppercase letter, one lowercase letter, and one digit";
         isValid = false;
     }
 

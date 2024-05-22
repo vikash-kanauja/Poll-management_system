@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { validateSignup } from "../utils/validation";
+import { validateFormData } from "../utils/validation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signupUser, createUser, getUser } from "../redux/reducers/authSlice";
 import { useDispatch, useSelector } from "react-redux"
@@ -42,7 +42,7 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { errors, isValid } = validateSignup(formData);
+        const { errors, isValid } = validateFormData(formData);
         setError(errors)
         if (isValid) {
             const { confirmPassword, ...formDataWithoutConfirmPassword } = formData;
@@ -150,7 +150,8 @@ const Signup = () => {
                                 onChange={handleChange}
                                 value={formData.roleId}>
                                 <option value="">Select Role</option>
-                                {role.data?.map((role, index) => {
+                                
+                                {role?.map((role, index) => {
                                     return (
                                         <option key={index} value={`${role.id}`}>
                                             {role.name.toLowerCase()}
@@ -237,9 +238,10 @@ const Signup = () => {
                         </button>
                     </div>
                 </form>
-                {!user && (<div className="">
+                <div className="">
+                {!user && (
                     <p className="text-base text-center font-semibold">Already have an account? <Link className="text-blue-600" to="/">Login</Link></p>
-                </div>)}
+                )}</div>
 
                 {successMessage && (
                     <div className="mt-4 bg-red-200 text-black-800 p-2 text-center rounded">
