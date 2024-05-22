@@ -18,28 +18,14 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const signupUser = createAsyncThunk(
-  "auth/signupUser",
-  async (formData) => {
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/register`,
-        formData
-      );
-      return response.data;
-    } catch (error) {
-      return error.response;
-
-    }
-  }
-);
-
-export const createUser = createAsyncThunk(
+export const createOrSignupUser = createAsyncThunk(
   "auth/createUser",
   async (userData) => {
+    const user = JSON.parse(localStorage.getItem("user"));
     try {
+      const url = `${process.env.REACT_APP_BASE_URL}/user/${user? "create":"register"}`
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/user/create`,
+        url,
         userData
       );
       return response.data;
@@ -90,22 +76,13 @@ const authSlice = createSlice({
         state.loading = false;
         state.err = action.payload;
       })
-      .addCase(signupUser.pending, (state) => {
+      .addCase(createOrSignupUser.pending, (state) => {
         state.loading = true;
       })
-      .addCase(signupUser.fulfilled, (state) => {
+      .addCase(createOrSignupUser.fulfilled, (state) => {
         state.loading = false;
       })
-      .addCase(signupUser.rejected, (state) => {
-        state.loading = false;
-      })
-      .addCase(createUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(createUser.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(createUser.rejected, (state) => {
+      .addCase(createOrSignupUser.rejected, (state) => {
         state.loading = false;
       });
   },

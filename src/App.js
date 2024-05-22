@@ -25,12 +25,12 @@ function App() {
         />
         <Route
           path="/signup"
-          element={<PrivateRoute Component={UserSignupRegister} redirectTo="/signup" />}
+          element={<PrivateRoute Component={UserSignupRegister} redirectTo="/signup"/>}
         />
         <Route
           path="/addPoll"
           element={
-            <PrivateRoute Component={AddEditPollPage} redirectTo="/addPoll" />}
+            <PrivateRoute Component={AddEditPollPage} redirectTo="/addPoll"/>}
         />
         <Route
           path="/editPoll/:id"
@@ -38,7 +38,7 @@ function App() {
         />
         <Route
           path="/createUser"
-          element={<PrivateRoute Component={UserSignupRegister} redirectTo="/createUser" />}
+          element={<PrivateRoute Component={UserSignupRegister} redirectTo="/createUser"/>}
         />
         <Route
           path="/users"

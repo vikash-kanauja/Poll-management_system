@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { validateFormData } from "../utils/validation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { signupUser, createUser, getUser } from "../redux/reducers/authSlice";
+import { createOrSignupUser, getUser } from "../redux/reducers/authSlice";
 import { useDispatch, useSelector } from "react-redux"
 import Modal from "../Components/Modal";
 import { fetchRoles } from '../redux/reducers/rollListSlice';
@@ -47,11 +47,7 @@ const UserSignupRegister = () => {
         if (isValid) {
             const { confirmPassword, ...formDataWithoutConfirmPassword } = formData;
             let res = "";
-            if (user) {
-                res = await dispatch(createUser(formDataWithoutConfirmPassword));
-            } else {
-                res = await dispatch(signupUser(formDataWithoutConfirmPassword));
-            }
+            res = await dispatch(createOrSignupUser(formDataWithoutConfirmPassword));
             if (res.payload) {
                 setShowModal(true)
             } else if (res.payload === 500) {
