@@ -6,7 +6,7 @@ export const fetchRoles = createAsyncThunk(
         const response = await axios.get(
             `${process.env.REACT_APP_BASE_URL}/role/list`,
         );
-        return response;
+        return response.data;
     }
 );
 
